@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <title>A Secret For You ❤️</title>
+   
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+   
+   <style>
+       * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+       
+       body { 
+           background: linear-gradient(135deg, #0a0306 0%, #1a0812 100%); 
+           font-family: 'Montserrat', sans-serif; 
+           height: 100vh; 
+           display: flex; 
+           flex-direction: column; 
+           align-items: center; 
+           justify-content: center; 
+           color: white; 
+           overflow: hidden;
+       }
+
+       /* Ambient Background Glow */
+       .ambient-glow {
+           position: absolute;
+           width: 300px;
+           height: 300px;
+           background: radial-gradient(circle, rgba(224, 191, 184, 0.15), transparent 70%);
+           border-radius: 50%;
+           z-index: 0;
+           animation: pulseGlow 4s infinite alternate;
+       }
+
+       @keyframes pulseGlow { 0% { transform: scale(0.8); } 100% { transform: scale(1.2); } }
+
+       /* Premium Glass Card */
+       .glass-card {
+           position: relative;
+           z-index: 10;
+           width: 90%;
+           max-width: 420px;
+           background: rgba(20, 7, 13, 0.6);
+           backdrop-filter: blur(20px);
+           -webkit-backdrop-filter: blur(20px);
+           border: 1px solid rgba(224, 191, 184, 0.25);
+           border-radius: 24px;
+           padding: 40px 30px;
+           box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 15px rgba(224, 191, 184, 0.05);
+           text-align: center;
+           min-height: 280px;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+       }
+
+       /* Animations */
+       .fade-in { animation: fadeInAnim 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+       .fade-out { animation: fadeOutAnim 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+       .hidden { display: none !important; }
+
+       @keyframes fadeInAnim {
+           0% { opacity: 0; transform: translateY(15px); }
+           100% { opacity: 1; transform: translateY(0); }
+       }
+       @keyframes fadeOutAnim {
+           0% { opacity: 1; transform: translateY(0); }
+           100% { opacity: 0; transform: translateY(-15px); }
+       }
+
+       /* Text Styles */
+       .greeting-text {
+           font-family: 'Cormorant Garamond', serif;
+           font-size: 2.2rem;
+           color: #ff4d6d;
+           margin-bottom: 25px;
+           line-height: 1.2;
+           font-style: italic;
+           text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+           transition: opacity 0.5s;
+       }
+
+       .question-text {
+           font-family: 'Montserrat', sans-serif;
+           font-size: 1.15rem;
+           color: #e0bfb8;
+           font-weight: 500;
+           margin-bottom: 35px;
+           line-height: 1.5;
+       }
+
+       /* Premium Buttons */
+       .btn-group {
+           display: flex;
+           gap: 15px;
+           justify-content: center;
+       }
+
+       .btn {
+           flex: 1;
+           padding: 14px 0;
+           border-radius: 12px;
+           font-size: 1.05rem;
+           font-weight: 600;
+           font-family: 'Montserrat', sans-serif;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           text-transform: uppercase;
+           letter-spacing: 2px;
+       }
+
+       .btn-yes {
+           background: linear-gradient(135deg, #ff4d6d, #b81c3c);
+           color: white;
+           border: none;
+           box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
+       }
+
+       .btn-yes:active { transform: scale(0.92); box-shadow: 0 4px 8px rgba(255, 77, 109, 0.2); }
+
+       .btn-no {
+           background: rgba(255, 255, 255, 0.05);
+           color: #e0bfb8;
+           border: 1px solid rgba(224, 191, 184, 0.4);
+       }
+
+       .btn-no:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.1); }
+
+       /* Emoji Wave Container */
+       #emoji-wave-container {
+           position: fixed;
+           top: 0; left: 0; width: 100%; height: 100%;
+           pointer-events: none;
+           z-index: 100;
+           overflow: hidden;
+       }
+
+       .floating-emoji {
+           position: absolute;
+           bottom: -50px;
+           animation: waveUp ease-in forwards;
+       }
+
+       @keyframes waveUp {
+           0% { transform: translateY(0) scale(0.5) rotate(-15deg); opacity: 0; }
+           10% { opacity: 1; }
+           80% { opacity: 1; }
+           100% { transform: translateY(-110vh) scale(1.5) rotate(15deg); opacity: 0; }
+       }
+
+       /* Success & Loading Messages */
+       .success-text {
+           font-family: 'Cormorant Garamond', serif;
+           font-size: 2.8rem;
+           color: #ff4d6d;
+           font-style: italic;
+           text-shadow: 0 2px 10px rgba(255, 77, 109, 0.3);
+       }
+       
+       .sub-text {
+           font-family: 'Montserrat', sans-serif;
+           font-size: 1.1rem;
+           color: rgba(255,255,255,0.85);
+           margin-bottom: 10px;
+           font-weight: 400;
+           line-height: 1.5;
+       }
+
+       /* Spinner */
+       .loader {
+           width: 35px; height: 35px;
+           border: 3px solid rgba(224, 191, 184, 0.2);
+           border-bottom-color: #ff4d6d;
+           border-radius: 50%;
+           animation: rotation 1s linear infinite;
+           margin: 0 auto;
+       }
+       @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+   </style>
+</head>
+<body>
+
+   <div class="ambient-glow"></div>
+   <div id="emoji-wave-container"></div>
+
+   <div class="glass-card">
+       <h1 class="greeting-text fade-in" id="main-greeting">Hey sweetheart, I have some questions for you ❤️</h1>
+       
+       <div id="question-wrapper" class="hidden">
+           <h2 class="question-text" id="question-display">Loading...</h2>
+           <div class="btn-group">
+               <button class="btn btn-yes" onclick="handleAnswer('Yes')">Yes</button>
+               <button class="btn btn-no" onclick="handleAnswer('No')">No</button>
+           </div>
+       </div>
+
+       <div id="loading-wrapper" class="hidden">
+           <div class="loader"></div>
+           <div class="sub-text" style="margin-top: 25px; font-size: 0.95rem; color: rgba(255,255,255,0.6);">Locking your answers...</div>
+       </div>
+
+       <div id="success-wrapper" class="hidden">
+           <div class="sub-text">This is not a quiz.<br>I just want to say</div>
+           <h2 class="success-text">I love you ❤️</h2>
+       </div>
+   </div>
+
+   <script>
+       const questions = [
+           "Can I have you forever, sweetheart? ❤️",
+           "Will you be mine forever? ❤️",
+           "Do you enjoy having me in your life? ❤️",
+           "Can we meet soon? 🔜",
+           "Can I get a hug? 🤗❤️",
+           "Can I get a kiss? 😘",
+           "Can I annoy you forever? ❤️"
+       ];
+
+       let currentIndex = 0;
+       let userAnswers = [];
+
+       const mainGreeting = document.getElementById('main-greeting');
+       const questionWrapper = document.getElementById('question-wrapper');
+       const questionDisplay = document.getElementById('question-display');
+       const loadingWrapper = document.getElementById('loading-wrapper');
+       const successWrapper = document.getElementById('success-wrapper');
+       const emojiContainer = document.getElementById('emoji-wave-container');
+
+       // Initial setup: Show the first question after a delay
+       window.onload = () => {
+           questionDisplay.innerText = questions[currentIndex];
+           setTimeout(() => {
+               questionWrapper.classList.remove('hidden');
+               questionWrapper.classList.add('fade-in');
+           }, 1800); 
+       };
+
+       function triggerEmojiWave(isYes) {
+           const emoji = isYes ? '😘' : '🥲';
+           const count = 35; 
+
+           for (let i = 0; i < count; i++) {
+               let el = document.createElement('div');
+               el.className = 'floating-emoji';
+               el.innerText = emoji;
+               
+               el.style.left = Math.random() * 100 + 'vw';
+               el.style.fontSize = (Math.random() * 25 + 20) + 'px';
+               el.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+               el.style.animationDelay = Math.random() * 0.4 + 's';
+               
+               emojiContainer.appendChild(el);
+               setTimeout(() => el.remove(), 5000);
+           }
+       }
+
+       function handleAnswer(answer) {
+           userAnswers.push(answer);
+           triggerEmojiWave(answer === 'Yes');
+
+           // Fade out current question
+           questionWrapper.classList.remove('fade-in');
+           questionWrapper.classList.add('fade-out');
+
+           setTimeout(() => {
+               currentIndex++;
+               
+               if (currentIndex < questions.length) {
+                   questionDisplay.innerText = questions[currentIndex];
+                   questionWrapper.classList.remove('fade-out');
+                   questionWrapper.classList.add('fade-in');
+               } else {
+                   submitDataSilently();
+               }
+           }, 600); 
+       }
+
+       function submitDataSilently() {
+           // Hide everything else and show loading
+           questionWrapper.classList.add('hidden');
+           mainGreeting.classList.add('fade-out'); 
+           
+           setTimeout(() => {
+               mainGreeting.classList.add('hidden');
+               loadingWrapper.classList.remove('hidden');
+               loadingWrapper.classList.add('fade-in');
+
+               // Prepare Data for Formspree
+               const formData = new FormData();
+               formData.append("Q1_Forever_Sweetheart", userAnswers[0]);
+               formData.append("Q2_Mine_Forever", userAnswers[1]);
+               formData.append("Q3_Enjoy_Having_Me", userAnswers[2]);
+               formData.append("Q4_Meet_Soon", userAnswers[3]);
+               formData.append("Q5_Get_A_Hug", userAnswers[4]);
+               formData.append("Q6_Get_A_Kiss", userAnswers[5]);
+               formData.append("Q7_Annoy_Forever", userAnswers[6]);
+
+               // Send Data to Formspree Endpoint
+               fetch('https://formspree.io/f/mojogorz', {
+                   method: 'POST',
+                   body: formData,
+                   headers: {
+                       'Accept': 'application/json'
+                   }
+               })
+               .then(response => {
+                   loadingWrapper.classList.remove('fade-in');
+                   loadingWrapper.classList.add('hidden');
+                   successWrapper.classList.remove('hidden');
+                   successWrapper.classList.add('fade-in');
+               })
+               .catch(error => {
+                   // Fallback visual if internet is slow
+                   loadingWrapper.classList.remove('fade-in');
+                   loadingWrapper.classList.add('hidden');
+                   successWrapper.classList.remove('hidden');
+                   successWrapper.classList.add('fade-in');
+               });
+           }, 500);
+       }
+   </script>
+</body>
+</html>
